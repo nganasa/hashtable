@@ -1,5 +1,4 @@
 <?php
-include '/home/snark/code/doublelink.php';
 
 class Entry{
 	public $_key;
