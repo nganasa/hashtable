@@ -57,7 +57,7 @@ class HashTable{
 			return NULL;
 		}
 		else{
-			return $this->slot[$i]->$_value;
+			return $this->slot[$i]->$value;
 		}
 	}
 
@@ -65,15 +65,25 @@ class HashTable{
 		$i = find($key);
 		if($this->slot[$i]!=NULL){
 			$this->slot[$i] = NULL;
+			loop:
 			$flag = TRUE;
+			$j=$i;
+			$h=0;
 			while ($flag) {
-				$j=$i;
 				$j=($j+1)%$this->maxSize;
-				if($this->hash($this->slot[$j]->$_key)==$i){
-					$this->slot[$i]=$this->slot[$j];
-					$this->slot[$j]=NULL;
+				if ($this->slot[$j]==NULL) {
+					$flag = FALSE;
+					$end = $j;
+				}
+				elseif ($this->slot[$j]->key==$key) {
+					$h = $j;
 				}
 			}
+			$this->slot[$i]=$this->slot[$h];
+			$this->slot[$i]=NULL;
+			$i=$h;
+			if (($h+1)%$this->maxSize!=$end && $h!=0) goto loop;
+			$this->size--;
 		}
 	}
 }
