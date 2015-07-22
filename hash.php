@@ -6,7 +6,7 @@ class Entry{
 
 	function  __construct($_key, $_value){
 		$this->key = $_key;
-		$this->value = $_value
+		$this->value = $_value;
 	}
 }
 
@@ -18,8 +18,14 @@ class HashTable{
 		$this->slot = array_fill(0, $this->maxSize, NULL);
 	}
 
-	function hash($key){
-
+	function _hash($key){
+		$h=0;
+		$a=31;
+		$str = strval($key);
+		for ($i=0; isset($str[$i]); $i++) { 
+			$h=$h*$a+$str[$i];
+		}
+		return $h;
 	}
 
 	function find($key){
@@ -32,7 +38,7 @@ class HashTable{
 
 	function resize($size){
 		for ($i=0; $i < $size-$this->maxSize; $i++) { 
-			array_push($this->slot, NULL)
+			array_push($this->slot, NULL);
 		}
 		$this->maxSize = $size;
 	}
@@ -68,15 +74,15 @@ class HashTable{
 			$h=$i;
 			while ($flag) {
 				$j=$i;
+				$hash=$this->hash($key);
 				while ($this->slot[$j]!=NULL) {
 					$j=($j+1)%$this->maxSize;
-					if ($this->slot[$j]->key==$key) {
+					if ($this->hash($this->slot[$j]->key)==$hash)
 						$h = $j;
-					}
 				}
 				if ($h==$i)
 					$flag= FALSE;
-				$key=$this->slot[($h+1)%$this->maxSize]->key;
+				$key=$this->slot[$h]->key;
 				$this->slot[$i]=$this->slot[$h];
 				$this->slot[$i]=NULL;
 				$i=$h;
@@ -85,4 +91,8 @@ class HashTable{
 		}
 	}
 }
+$t = new HashTable();
+echo strval("abrakadabra");
+echo $t->_hash("abrakadabra");
+
 ?>
