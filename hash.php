@@ -1,4 +1,5 @@
 <?php
+include '/home/snark/code/doublelink.php';
 
 class Entry{
 	public $_key;
@@ -19,7 +20,7 @@ class HashTable{
 	}
 
 	function hash($key){
-
+		
 	}
 
 	function find($key){
@@ -76,7 +77,7 @@ class HashTable{
 				}
 				if ($h==$i)
 					$flag= FALSE;
-				$key=$this->slot[$h]->key;
+				$key=$this->slot[($h+1)%$this->maxSize]->key;
 				$this->slot[$i]=$this->slot[$h];
 				$this->slot[$i]=NULL;
 				$i=$h;
