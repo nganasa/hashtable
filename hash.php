@@ -63,26 +63,25 @@ class HashTable{
 
 	function remove($key){
 		$i = find($key);
-		if($this->slot[$i]!=NULL){
-			$this->slot[$i] = NULL;
-			loop:
-			$flag = TRUE;
-			$j=$i;
-			$h=0;
+		if($this->slot[$i]!= NULL){
+			//$this->slot[$i] = NULL;
+			$flag=TRUE;
+			$h=$i;
 			while ($flag) {
-				$j=($j+1)%$this->maxSize;
-				if ($this->slot[$j]==NULL) {
-					$flag = FALSE;
-					$end = $j;
+				$j=$i;
+				while ($this->slot[$j]!=NULL) {
+					$j=($j+1)%$this->maxSize;
+					if ($this->slot[$j]->key==$key) {
+						$h = $j;
+					}
 				}
-				elseif ($this->slot[$j]->key==$key) {
-					$h = $j;
-				}
+				if ($h==$i)
+					$flag= FALSE;
+				$key=$this->slot[$h]->key;
+				$this->slot[$i]=$this->slot[$h];
+				$this->slot[$i]=NULL;
+				$i=$h;
 			}
-			$this->slot[$i]=$this->slot[$h];
-			$this->slot[$i]=NULL;
-			$i=$h;
-			if (($h+1)%$this->maxSize!=$end && $h!=0) goto loop;
 			$this->size--;
 		}
 	}
