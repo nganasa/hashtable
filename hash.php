@@ -111,6 +111,13 @@ function Test(){
 		array_push($res, $t->get($item));
 	}
 	print_r($res);
+	for ($i=0; $i<10; $i++) { 
+	 	$t->remove($arr[$i]);
+	}
+	foreach ($arr as $item) {
+		array_push($res, $t->get($item));
+	}
+	print_r($res);
  }
 
 Test();
